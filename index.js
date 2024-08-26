@@ -1,5 +1,5 @@
-const Logger = require('./drivers/logger')
+const { version } = require('./package.json');
 
 module.exports = {
-  Logger
+  version
 }

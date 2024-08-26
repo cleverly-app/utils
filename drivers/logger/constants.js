@@ -7,7 +7,7 @@ const levels = {
 };
 
 const colors = {
-    error: 'red',
+  error: 'red',
   warn: 'yellow',
   info: 'cyan',
   debug: 'gray',

@@ -1,44 +1,54 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 
+const { getHost } = require('./utils');
+
+const { dbOption, getLoggerLevel } = require('./constants');
+
 const { environments } = require('../constants');
-  const logger = require('./logger.driver');
+const logger = require('./logger.driver');
 const { env, mongo, debug } = environments;
 const {
   host, port, database, user = false, pass = false, prefix, poolsize, timeout
 } = mongo;
 
 class MongoDatabase {
-  constructor(modelDirectory) {
-    this.modelDirectory = modelDirectory
-    this.env = env;
-    this.db = database;
-    this.port = !!port && Number.isInteger(parseInt(port, 10)) ? `:${port}` : '';
-    this.dbURI = `${prefix}://${host}${this.port}/${this.db}`;
-    this.instance = false;
+  constructor(
+    debug,
+    directory,
+    host,
+    port, 
+    db,
+    config = {},
+    logger = console,
+  ) {
+    if (MongoDatabase.instance) {
+      return MongoDatabase.instance;
+    }
+
+    this.directory = directory;
+    this.debug = debug;
+    this.name = db;
+    this.host = getHost(host, port)
+    this.dbURI = `mongodb://${this.host}${this.port}/${this.db}`;
+    this.logger = logger;
+    this.loggerLevel = getLoggerLevel(this.debug);
+
+    this.db = false;
 
     this.dbOption = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
-      autoIndex: true,
-      poolSize: poolsize,
-      serverSelectionTimeoutMS: timeout,
-      logger: logger.debug,
-      loggerLevel: debug ? 'debug' : 'info',
+      ...dbOption,
+      ...config,
+      logger: this.logger,
+      loggerLevel: this.loggerLevel,
     };
-    if (user !== false && pass !== false) {
-      this.dbOption.auth = { authSource: 'admin' };
-      this.dbOption.user = user;
-      this.dbOption.pass = pass;
-    }
+    
+    MongoDatabase.instance = this;
+    
     this.connect();
-
   }
 
   setNotifications(connection) {
@@ -68,10 +78,17 @@ class MongoDatabase {
     });
   }
 
-  bindModels(directory) {
-    fs
-      .readdirSync(this.modelDirectory)
-      .filter((file) => (!['.', 'index.js', 'schemas', directory].includes(file)))
+  bindModels() {
+    const exclude = [
+      '.',
+      'index.js',
+      'schemas',
+      directory
+    ];
+
+    return fs
+      .readdirSync(this.directory)
+      .filter((file) => (!exclude.includes(file)))
       .forEach((file) => {
         const [name] = file.split('.');
         const model = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
@@ -83,17 +100,16 @@ class MongoDatabase {
 
 
   connect () {
-    if (this.instance === false) {
-      this.instance = mongoose.createConnection(this.dbURI, this.dbOption)
-      this.instance
-      .then(() => {
-        logger.info(`Instance started @ ${this.dbURI}`);
-      })
-      .catch(err => {
-        logger.error(`Error on start mongo connection @ ${this.dbURI}: ${err.message}`);
-      });
-      this.bindModels(this.modelDirectory)
-      this.setNotifications(this.instance.client)
+    if (this.db === false) {
+      this.db = mongoose.createConnection(this.dbURI, this.dbOption)
+        .then(() => {
+          this.logger.info(`Instance started @ ${this.dbURI}`)
+          this.bindModels(this.di)
+        })
+        .catch(err => (
+          this.logger.error(`Error starting connection @ ${this.dbURI}: ${err.message}`)
+        ));
+        this.setNotifications(this.db.client)
     }
     return true
   }
