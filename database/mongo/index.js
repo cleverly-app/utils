@@ -91,7 +91,6 @@ class MongoDatabase {
       });
   }
 
-
   connect () {
     if (this.db === false) {
       this.db = mongoose.createConnection(this.dbURI, this.dbOption)

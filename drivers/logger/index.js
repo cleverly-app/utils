@@ -16,7 +16,8 @@ class Logger {
     winston.addColors({ levels, colors })
 
     this.environment = environment;
-    this.logger = winston.createLogger({
+    
+    Logger.instance = winston.createLogger({
       levels,
       level,
       format: combine(
@@ -26,10 +27,7 @@ class Logger {
         printf(line)
       ),
       transports: [new winston.transports.Console()],
-    });
-    
-
-    Logger.instance = this;
+    });;
 
   }
 
