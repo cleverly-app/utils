@@ -7,6 +7,7 @@ module.exports = class commsConnector extends Rest {
     this.templates = templates;
   }
 
+
   sendMail(to, template, data) {
     const body = {
       destination: to,
@@ -21,7 +22,16 @@ module.exports = class commsConnector extends Rest {
         `)
       })
       .catch((error) => {
-        this.logger.error(`Mail send error: ${error}`)
+        const { status, data } = error;
+
+        if(status) {
+          if(data?.errors)
+            this.logger.debug(data?.errors)
+          
+          return this.logger.error(`Mail send error [${status}]: ${data?.message || data}`)
+        }
+        
+        return this.logger.error(`Mail send error: ${error}`)
       });
   }
 
