@@ -7,6 +7,7 @@ const dbOption = {
   poolSize: 10,
   serverSelectionTimeoutMS: 5000,
 };
+
 module.exports = {
   dbOption
 }

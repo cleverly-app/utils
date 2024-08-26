@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 
 const { getHost, getLoggerLevel } = require('./utils');
 
+const { dbOption } = require('./constants')
+
 class MongoDatabase {
   constructor(
     debug,
