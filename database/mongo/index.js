@@ -31,15 +31,16 @@ class MongoDatabase {
     this.logger = logger;
     this.loggerLevel = getLoggerLevel(this.debug);
 
+    
     this.dbOption = {
       ...dbOption,
       ...config,
       logger: this.log.bind(this),
       loggerLevel: this.loggerLevel,
     };
-
+    
     const { user, pass } = auth;
- 
+    
     if (user !== false && pass !== false) {
       this.dbOption = {
         ...this.dbOption,
@@ -47,6 +48,8 @@ class MongoDatabase {
       }
     }
     
+    this.db = false;
+
     MongoDatabase.instance = this;
     
     this.connect();
@@ -108,7 +111,8 @@ class MongoDatabase {
   connect () {
     if (this.db === false) {
       this.db = mongoose.createConnection(this.dbURI, this.dbOption)
-        .then(() => {
+        .then((connection) => {
+          this.db = connection;
           this.logger.info(`Connection started @ ${this.dbURI}`)
           this.bindModels(this.directory)
           this.setNotifications()
