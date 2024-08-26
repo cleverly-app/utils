@@ -26,7 +26,7 @@ class MongoDatabase {
     this.debug = debug;
     this.name = db;
     this.host = getHost(host, port)
-    this.dbURI = `mongodb://${this.host}${this.port}/${this.db}`;
+    this.dbURI = `mongodb://${this.host}/${this.name}`;
     this.logger = logger;
     this.loggerLevel = getLoggerLevel(this.debug);
 
