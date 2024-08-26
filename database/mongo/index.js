@@ -44,7 +44,9 @@ class MongoDatabase {
     this.connect();
   }
 
-  setNotifications(connection) {
+  setNotifications() {
+    const connection = this.db.client;
+    
     connection.on('error', (err) => {
       logger.error(`Error connecting to MongoDb @ ${this.dbURI}: ${err.message}`)
     });
@@ -97,11 +99,11 @@ class MongoDatabase {
         .then(() => {
           this.logger.info(`Instance started @ ${this.dbURI}`)
           this.bindModels(this.di)
+          this.setNotifications()
         })
         .catch(err => (
           this.logger.error(`Error starting connection @ ${this.dbURI}: ${err.message}`)
         ));
-        this.setNotifications(this.db.client)
     }
     return true
   }
