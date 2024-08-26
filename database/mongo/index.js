@@ -15,6 +15,9 @@ class MongoDatabase {
     host,
     port, 
     db,
+    user,
+    pass,
+    auth = { authSource: 'admin' },
     config = {},
     logger = console,
   ) {
@@ -38,6 +41,12 @@ class MongoDatabase {
       logger: this.log.bind(this),
       loggerLevel: this.loggerLevel,
     };
+ 
+    if (user !== false && pass !== false) {
+      config.auth = auth;
+      config.user = user;
+      config.pass = pass;
+    }
     
     MongoDatabase.instance = this;
     
@@ -102,8 +111,8 @@ class MongoDatabase {
       this.db = mongoose.createConnection(this.dbURI, this.dbOption)
         .then(() => {
           this.logger.info(`Connection started @ ${this.dbURI}`)
-          // this.bindModels()
-          // this.setNotifications()
+          this.bindModels()
+          this.setNotifications()
         })
         .catch(err => (
           this.logger.error(`Error starting connection @ ${this.dbURI}: ${err.message}`)
