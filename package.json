@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/cleverly-app/utils.git"
   },
-  "dependencies": {
+  "perDependencies": {
     "axios": "^1.4.0",
     "mongoose": "^5.11.13",
     "valid-url": "^1.0.9",
