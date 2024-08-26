@@ -66,7 +66,8 @@ module.exports = class Rest {
       .then((response) => {
         logger.debug(`Success: ${request}`);
         
-        if (response) this.constructor.response(response);
+        if (response)
+          return this.constructor.response(response);
 
         throw new Error(`Service ${client} return empty response`);
       })
