@@ -36,8 +36,6 @@ class MongoDatabase {
       ...dbOption,
       ...config,
       logger: this.log,
-      logger: (message, { type }) => logger.log({ level: type, message}),
-
       loggerLevel: this.loggerLevel,
     };
     
@@ -47,7 +45,7 @@ class MongoDatabase {
   }
 
   log(message, detail) {
-    log(this.logger, message, detail)
+    logDb(this.logger, message, detail)
   }
 
   setNotifications() {
