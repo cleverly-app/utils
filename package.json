@@ -1,0 +1,25 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "utils for apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/cleverly-app/utils.git"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "mongoose": "^5.11.13",
+    "valid-url": "^1.0.9",
+    "winston": "^3.9.0"
+  },
+  "author": "Yeinso Blanco <yeinsojbm@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cleverly-app/utils/issues"
+  },
+  "homepage": "https://github.com/cleverly-app/utils#readme"
+}
