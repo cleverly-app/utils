@@ -18,6 +18,6 @@ const date ='YYYY-MM-DD hh:mm:ss.SSS A';
 
 module.exports = {
   levels,
-  colores,
+  colors,
   date
 }
