@@ -104,7 +104,7 @@ class MongoDatabase {
         const model = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
         const modelPath = path.join(this.directory, file);
         const schema = require(modelPath);
-        this.instance.model(model, schema);
+        this.db.model(model, schema);
       });
   }
 
