@@ -17,7 +17,7 @@ class Logger {
 
     this.environment = environment;
     
-    Logger.instance = winston.createLogger({
+    this.log = winston.createLogger({
       levels,
       level,
       format: combine(
@@ -27,7 +27,9 @@ class Logger {
         printf(line)
       ),
       transports: [new winston.transports.Console()],
-    });;
+    });
+
+    Logger.instance = this;
 
   }
 
