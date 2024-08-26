@@ -69,7 +69,7 @@ module.exports = class Rest {
       .catch(({ response, code }) => {
         logger.error(`Fail (${code}): ${request}`);
         
-        if (response && response?.status <= 200)
+        if (response && response?.status <= 300)
           return this.constructor.response(response);
 
         if(response)
