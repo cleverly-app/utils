@@ -25,15 +25,15 @@ module.exports = class commsConnector extends Rest {
         const { status, data } = error;
 
         if(status) {
-          if(data?.errors)
-            this.logger.debug(data?.errors)
-          
-          return this.logger.error(`Mail send error [${status}]: ${data?.message || data}`)
+          this.logger.error(`Mail send error [${status}]: ${data?.message || data}`)
+          if(data?.errors){
+            this.logger.debug(data);
+            this.logger.debug(data?.errors);
+            this.logger.debug(data?.stack);
+          }
+        } else {
+          this.logger.error(`Mail send error: ${error}`);
         }
-        
-        return this.logger.error(`Mail send error: ${error}`)
       });
   }
-
-  
 };
