@@ -15,9 +15,7 @@ class MongoDatabase {
     host,
     port, 
     db,
-    user,
-    pass,
-    auth = { authSource: 'admin' },
+    auth,
     config = {},
     logger = console,
   ) {
@@ -33,19 +31,20 @@ class MongoDatabase {
     this.logger = logger;
     this.loggerLevel = getLoggerLevel(this.debug);
 
-    this.db = false;
-
     this.dbOption = {
       ...dbOption,
       ...config,
       logger: this.log.bind(this),
       loggerLevel: this.loggerLevel,
     };
+
+    const { user, pass } = auth;
  
     if (user !== false && pass !== false) {
-      config.auth = auth;
-      config.user = user;
-      config.pass = pass;
+      this.dbOption = {
+        ...this.dbOption,
+        ...auth,
+      }
     }
     
     MongoDatabase.instance = this;
@@ -86,7 +85,7 @@ class MongoDatabase {
     });
   }
 
-  bindModels() {
+  bindModels(directory) {
     const exclude = [
       '.',
       'index.js',
@@ -95,12 +94,12 @@ class MongoDatabase {
     ];
 
     return fs
-      .readdirSync(this.directory)
+      .readdirSync(directory)
       .filter((file) => (!exclude.includes(file)))
       .forEach((file) => {
         const [name] = file.split('.');
         const model = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-        const modelPath = path.join(this.modelDirectory, file);
+        const modelPath = path.join(this.directory, file);
         const schema = require(modelPath);
         this.instance.model(model, schema);
       });
@@ -111,7 +110,7 @@ class MongoDatabase {
       this.db = mongoose.createConnection(this.dbURI, this.dbOption)
         .then(() => {
           this.logger.info(`Connection started @ ${this.dbURI}`)
-          this.bindModels()
+          this.bindModels(this.directory)
           this.setNotifications()
         })
         .catch(err => (
