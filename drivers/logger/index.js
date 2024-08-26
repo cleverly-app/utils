@@ -2,10 +2,9 @@ const winston = require('winston');
 
 const { levels, colors, date } = require('./constants');
 
-const { printf } = require('./functions');
+const { line } = require('./utils');
  
 const { combine, timestamp, printf, colorize, align } = winston.format;
-
 
 class Logger {
   
@@ -24,7 +23,7 @@ class Logger {
         colorize({ all: true }),
         timestamp({ format }),
         align(),
-        printf(printf)
+        printf(line)
       ),
       transports: [new winston.transports.Console()],
     });
