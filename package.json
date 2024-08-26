@@ -14,7 +14,8 @@
     "axios": "^1.4.0",
     "mongoose": "^5.11.13",
     "valid-url": "^1.0.9",
-    "winston": "^3.9.0"
+    "winston": "^3.9.0",
+    "git-repo-info": "^2.1.1"
   },
   "author": "Yeinso Blanco <yeinsojbm@gmail.com>",
   "license": "MIT",
