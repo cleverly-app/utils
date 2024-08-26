@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 
-const { getHost, getLoggerLevel } = require('./utils');
+const { getHost, getLoggerLevel, logDb } = require('./utils');
 
 const { dbOption } = require('./constants')
 
@@ -35,13 +35,19 @@ class MongoDatabase {
     this.dbOption = {
       ...dbOption,
       ...config,
-      logger: this.logger,
+      logger: this.log,
+      logger: (message, { type }) => logger.log({ level: type, message}),
+
       loggerLevel: this.loggerLevel,
     };
     
     MongoDatabase.instance = this;
     
     this.connect();
+  }
+
+  log(message, detail) {
+    log(this.logger, message, detail)
   }
 
   setNotifications() {
@@ -94,7 +100,6 @@ class MongoDatabase {
   }
 
   connect () {
-    console.log("HOLA")
     if (this.db === false) {
       this.db = mongoose.createConnection(this.dbURI, this.dbOption)
         .then(() => {
