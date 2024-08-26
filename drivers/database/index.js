@@ -6,15 +6,6 @@ const mongoose = require('mongoose');
 
 const { getHost } = require('./utils');
 
-const { dbOption, getLoggerLevel } = require('./constants');
-
-const { environments } = require('../constants');
-const logger = require('./logger.driver');
-const { env, mongo, debug } = environments;
-const {
-  host, port, database, user = false, pass = false, prefix, poolsize, timeout
-} = mongo;
-
 class MongoDatabase {
   constructor(
     debug,
