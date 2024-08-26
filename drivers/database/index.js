@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 
-const { getHost } = require('./utils');
+const { getHost, getLoggerLevel } = require('./utils');
 
 class MongoDatabase {
   constructor(
