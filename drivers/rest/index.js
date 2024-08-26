@@ -11,10 +11,6 @@ module.exports = class Rest {
     headers = {},
     logger = console,
   ) {
-    if (Rest.instance) {
-      return Rest.instance;
-    }
-    
     this.app = app;
     this.client = client;
     this.host = `${host}${base}`;
@@ -35,8 +31,6 @@ module.exports = class Rest {
       baseURL: this.host,
       headers: this.headers,
     });
-
-    Rest.instance = this;
   }
 
   call(route, method, data, config) {

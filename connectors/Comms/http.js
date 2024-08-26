@@ -1,6 +1,5 @@
 const Rest = require('../../drivers/rest')
 
-
 module.exports = class commsConnector extends Rest {
   constructor(host, app, headers, templates, logger) {
     super(host, '/v1', 'Comms', app, headers, logger);
