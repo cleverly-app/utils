@@ -35,7 +35,7 @@ class MongoDatabase {
     this.dbOption = {
       ...dbOption,
       ...config,
-      logger: this.log,
+      logger: this.log.bind(this),
       loggerLevel: this.loggerLevel,
     };
     
