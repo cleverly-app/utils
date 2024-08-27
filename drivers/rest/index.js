@@ -22,7 +22,7 @@ module.exports = class Rest {
 
     this.headers = { 
       'Content-Type': 'application/json',
-      'client-name': this.name,
+      'client-name': this.client,
       'app-name': this.app,
       ...headers, 
     }
