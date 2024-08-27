@@ -72,7 +72,7 @@ module.exports = class Rest {
         if(response)          
           return this.constructor.response(response);
 
-        throw new Error(`Service ${this.name} is Down: ${code}`);
+        throw new Error(`Service ${client} is Down: ${code}`);
       });
   }
 
