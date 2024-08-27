@@ -26,24 +26,15 @@ class MongoDatabase {
     this.dbURI = uri;
     this.logger = logger;
     this.loggerLevel = getLoggerLevel(this.debug);
-
-    const { user, pass, ...otherconfig } = config;
     
     this.dbOption = {
       ...dbOption,
-      ...otherconfig,
+      ...config,
       logger: this.log.bind(this),
       loggerLevel: this.loggerLevel,
     };
     
     
-    if (user !== false && pass !== false) {
-      this.dbOption = {
-        user,
-        pass,
-        ...this.dbOption,
-      }
-    }
     
     this.db = false;
 
