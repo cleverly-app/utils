@@ -42,7 +42,7 @@ module.exports = class Rest {
       case 'PATCH':
           return this.axios.patch(route, data, config);
       case 'DELETE':
-        return this.axios.delete(route, data, config);
+        return this.axios.delete(route, { data, ...config });
       default:
         return this.axios.get(route, config);
     }
