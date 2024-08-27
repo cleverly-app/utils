@@ -34,6 +34,10 @@ module.exports = class Rest {
   }
 
   call(route, method, data, config) {
+    this.logger.debug(route);
+    this.logger.debug(method);
+    this.logger.debug(data);
+    this.logger.debug(config);
     switch (method.toUpperCase()) {
       case 'POST':
         return this.axios.post(route, data, config);
