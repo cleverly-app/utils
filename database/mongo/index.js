@@ -22,7 +22,6 @@ class MongoDatabase {
 
     this.directory = directory;
     this.debug = debug;
-    this.name = db;
     this.dbURI = uri;
     this.logger = logger;
     this.loggerLevel = getLoggerLevel(this.debug);
