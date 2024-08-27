@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 
-const { getHost, getLoggerLevel, logDb } = require('./utils');
+const { getLoggerLevel, logDb } = require('./utils');
 
 const { dbOption } = require('./constants')
 
@@ -12,10 +12,7 @@ class MongoDatabase {
   constructor(
     debug,
     directory,
-    host,
-    port, 
-    db,
-    auth,
+    uri,
     config = {},
     logger = console,
   ) {
@@ -26,25 +23,25 @@ class MongoDatabase {
     this.directory = directory;
     this.debug = debug;
     this.name = db;
-    this.host = getHost(host, port)
-    this.dbURI = `mongodb://${this.host}/${this.name}`;
+    this.dbURI = uri;
     this.logger = logger;
     this.loggerLevel = getLoggerLevel(this.debug);
 
+    const { user, pass, ...otherconfig } = config;
     
     this.dbOption = {
       ...dbOption,
-      ...config,
+      ...otherconfig,
       logger: this.log.bind(this),
       loggerLevel: this.loggerLevel,
     };
     
-    const { user, pass } = auth;
     
     if (user !== false && pass !== false) {
       this.dbOption = {
+        user,
+        pass,
         ...this.dbOption,
-        ...auth,
       }
     }
     
