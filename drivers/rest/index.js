@@ -69,11 +69,8 @@ module.exports = class Rest {
       .catch(({ response, code }) => {
         logger.error(`Fail (${code}): ${request}`);
         
-        if (response && response?.status <= 300)
+        if(response)          
           return this.constructor.response(response);
-
-        if(response)
-          return Promise.reject(this.constructor.response(response));
 
         throw new Error(`Service ${this.name} is Down: ${code}`);
       });
