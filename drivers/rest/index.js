@@ -11,10 +11,12 @@ module.exports = class Rest {
     headers = {},
     logger = console,
   ) {
+    this.
     this.app = app;
     this.client = client;
-    this.host = `${host}${base}`;
-    this.logger = logger
+    this.host = host;
+    this.base = base;
+    this.logger = logger;
 
     if (!urlValidator.isUri(this.host)) {
       throw new Error(`${this.host} is Invalid`);
@@ -52,15 +54,16 @@ module.exports = class Rest {
     }
   }
 
-  send(route = '', method = 'get', data = {}, config = {}) {
+  send(route = '/', method = 'get', data = {}, config = {}) {
     const { logger, client, host } = this;
     const verb = method.toUpperCase();
+    const path = `${this.base}${route}`
 
-    const request = `${client} - [${verb}] ${host}${route}`;
+    const request = `${client} - [${verb}] ${host}${path}`;
 
     logger.info(`Requesting: ${request}`);
 
-    return this.call(route, verb, data, { timeout: 1000, ...config })
+    return this.call(path, verb, data, { timeout: 1000, ...config })
       .then((response) => {
         logger.debug(`Success: ${request}`);
         
@@ -81,5 +84,9 @@ module.exports = class Rest {
 
   static response({ data, status }) {
     return { data, status: parseInt(status, 10) };
+  }
+
+  healtcheck() {
+    return this.send()
   }
 };
