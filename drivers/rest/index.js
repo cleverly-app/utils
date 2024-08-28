@@ -89,6 +89,6 @@ module.exports = class Rest {
   health() {
     return this.send('')
       .then(({ data }) => data)
-      .catch(() => { running: false }) 
+      .catch(() => ({ running: false })) 
   }
 };
