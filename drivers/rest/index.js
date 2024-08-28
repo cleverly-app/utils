@@ -34,7 +34,7 @@ module.exports = class Rest {
     });
   }
 
-  call(route = '', method = 'GET', data = {}, config = {}) {
+  call(route, method, data, config) {
     this.logger.debug(route);
     this.logger.debug(method);
     this.logger.debug(data);
@@ -56,7 +56,8 @@ module.exports = class Rest {
   send(route = '/', method = 'get', data = {}, config = {}) {
     const { logger, client, host } = this;
     const verb = method.toUpperCase();
-    const path = `${this.base}${route}`
+    const base = route === '' ? '' : this.base;
+    const path = `${base}${route}`
 
     const request = `${client} - [${verb}] ${host}${path}`;
 
@@ -86,6 +87,6 @@ module.exports = class Rest {
   }
 
   health() {
-    return this.call()
+    return this.send('')
   }
 };
