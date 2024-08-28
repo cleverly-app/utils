@@ -14,7 +14,7 @@ const colors = {
   trace: 'magenta'
 };
 
-const date ='YYYY-MM-DD hh:mm:ss.SSS A';
+const date ='YYYY-MM-DD HH:mm:ss.SSS';
 
 module.exports = {
   levels,
