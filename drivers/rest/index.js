@@ -88,5 +88,6 @@ module.exports = class Rest {
 
   health() {
     return this.send('')
+      .then(({ data }) => data)
   }
 };
