@@ -58,9 +58,9 @@ module.exports = class Rest {
 
     const request = `${client} - [${verb}] ${host}${route}`;
 
-    logger.info(`Requesting: ${request}`)
+    logger.info(`Requesting: ${request}`);
 
-    return this.call(route, verb, data, config)
+    return this.call(route, verb, data, { timeout: 1000, ...config })
       .then((response) => {
         logger.debug(`Success: ${request}`);
         
