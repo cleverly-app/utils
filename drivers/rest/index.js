@@ -70,7 +70,7 @@ module.exports = class Rest {
         throw new Error(`Service ${client} return empty response`);
       })  
       .catch(({ response, code }) => {
-        logger.error(`Fail (${code}) [${response?.status || '000'}]: ${request}`);
+        logger.error(`Fail (${code} - ${response?.status || '000'}]): ${request}`);
         
         if(response)          
           return this.constructor.response(response);
