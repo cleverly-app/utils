@@ -34,7 +34,7 @@ module.exports = class Rest {
     });
   }
 
-  call(route, method, data, config) {
+  call(route = '', method = 'GET', data = {}, config = {}) {
     this.logger.debug(route);
     this.logger.debug(method);
     this.logger.debug(data);
@@ -85,7 +85,7 @@ module.exports = class Rest {
     return { data, status: parseInt(status, 10) };
   }
 
-  healtcheck() {
-    return this.send()
+  health() {
+    return this.call()
   }
 };
