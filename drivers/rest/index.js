@@ -11,7 +11,6 @@ module.exports = class Rest {
     headers = {},
     logger = console,
   ) {
-    this.
     this.app = app;
     this.client = client;
     this.host = host;
