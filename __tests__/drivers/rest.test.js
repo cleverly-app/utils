@@ -28,7 +28,7 @@ const axios = require('axios');
 
 const host = 'host';
 const base = '/test';
-const client = '/test';
+const client = 'test';
 const app = 'test';
 const headers = {};
 
@@ -88,6 +88,33 @@ test('Healthcheck', () => {
   instanceOne.axios.get.mockReturnValue(Promise.resolve({ data: "data" }));
 
   instanceOne.health()
+
+  expect(instanceOne.axios.get).toHaveBeenCalledWith("", { timeout })
+
+});
+
+
+test('Healthcheck Fail', async () => {
+
+  urlValidator.isUri.mockReturnValue(true);
+  
+  const instanceOne = new Rest(
+    host,
+    base,
+    client,
+    app,
+    headers,
+    logger,
+  );
+  
+  instanceOne.axios.get.mockReturnValue(Promise.reject({ data: "data" }));
+
+  const health = await instanceOne.health();
+
+  expect(health.running).toBe(false);
+  expect(health.client).toBe(client);
+  expect(health.app).toBe(app);
+  expect(health.error.message).toBe('Service test is Down: undefined');
 
   expect(instanceOne.axios.get).toHaveBeenCalledWith("", { timeout })
 

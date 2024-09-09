@@ -103,7 +103,7 @@ module.exports = class Rest {
           client: this.client,
           app: this.app,
           error: {
-            message: error?.message,
+            message: e?.message,
             e,
           }
         }
