@@ -4,7 +4,7 @@
   "description": "utils for apps",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/cleverly-app/utils/issues"
   },
-  "homepage": "https://github.com/cleverly-app/utils#readme"
+  "homepage": "https://github.com/cleverly-app/utils#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }

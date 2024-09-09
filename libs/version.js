@@ -1,4 +1,4 @@
-const git = require("git-repo-info")
+const git = require('git-repo-info')
 
 module.exports = () => {
   const { tag, lastTag, abbreviatedSha } = git();
