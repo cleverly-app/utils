@@ -97,7 +97,7 @@ module.exports = class Rest {
     return this.send('', 'get', {}, config)
       .then(({ data }) => data)
       .catch(e => {
-        this.debug(e)
+        this.logger.debug(e)
         return {
           running: false,
           client,
