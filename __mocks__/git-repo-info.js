@@ -1,4 +1,4 @@
 'use strict';
 
-module.exports = jest.createMockFromModule('git-repo-info');;
+module.exports = jest.mock('git-repo-info');
 
