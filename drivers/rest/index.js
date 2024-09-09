@@ -12,12 +12,17 @@ module.exports = class Rest {
     app = 'Unknown', 
     headers = {},
     logger = console,
+    config = {},
   ) {
     this.app = app;
     this.client = client;
     this.host = host;
     this.base = base;
     this.logger = logger;
+    this.config = {
+      timeout,
+      ...config,
+    }
 
     if (!urlValidator.isUri(this.host)) {
       throw new Error(`${this.host} is Invalid`);
@@ -65,7 +70,7 @@ module.exports = class Rest {
 
     logger.info(`Requesting: ${request}`);
 
-    return this.call(path, verb, data, { timeout, ...config })
+    return this.call(path, verb, data, { ...this.config, ...config })
       .then((response) => {
         logger.debug(`Success: ${request}`);
         
