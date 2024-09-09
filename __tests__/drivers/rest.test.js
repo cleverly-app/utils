@@ -225,3 +225,55 @@ test('Delete', () => {
   expect(instanceOne.axios.delete).toHaveBeenCalledWith(`${base}${path}`, { data, timeout })
 
 });
+
+
+test('Create instance with TO 50000ms', () => {
+
+  urlValidator.isUri.mockReturnValue(true);
+
+  const config = { timeout: 50000 };
+  
+  const instanceOne = new Rest(
+    host,
+    base,
+    client,
+    app,
+    headers,
+    logger,
+    config
+  );
+  
+  instanceOne.axios.get.mockReturnValue(Promise.resolve({ data: "data" }));
+
+  instanceOne.health();
+
+  expect(instanceOne.axios.get).toHaveBeenCalledWith("", config)
+
+});
+
+
+test('Overwrite config for instance with TO 50000ms', () => {
+
+  urlValidator.isUri.mockReturnValue(true);
+
+  const config = { timeout: 50000 };
+  const config2 = { timeout: 60000 };
+
+  
+  const instanceOne = new Rest(
+    host,
+    base,
+    client,
+    app,
+    headers,
+    logger,
+    config
+  );
+  
+  instanceOne.axios.get.mockReturnValue(Promise.resolve({ data: "data" }));
+
+  instanceOne.health(config2);
+
+  expect(instanceOne.axios.get).toHaveBeenCalledWith("", config2)
+
+});
