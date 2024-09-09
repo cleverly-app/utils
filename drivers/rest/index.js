@@ -107,6 +107,5 @@ module.exports = class Rest {
           }
         }
       })
-      .catch((error) => ({ running: false, error })) 
   }
 };
