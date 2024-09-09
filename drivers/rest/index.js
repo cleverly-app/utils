@@ -96,6 +96,17 @@ module.exports = class Rest {
   health(config = {}) {
     return this.send('', 'get', {}, config)
       .then(({ data }) => data)
+      .catch(e => {
+        this.debug(e)
+        return {
+          running: false,
+          client,
+          error: {
+            message: error?.message,
+            e,
+          }
+        }
+      })
       .catch((error) => ({ running: false, error })) 
   }
 };
