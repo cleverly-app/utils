@@ -100,7 +100,8 @@ module.exports = class Rest {
         this.logger.debug(e)
         return {
           running: false,
-          client,
+          client: this.client,
+          app: this.app,
           error: {
             message: error?.message,
             e,
