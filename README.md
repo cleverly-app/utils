@@ -4,6 +4,7 @@ Lib for utils cross the ecosystem
 # Contibute
 1. Clone the repo
 1. Add/Update feature
+1. Validate the tests
 1. Commit to branch 
 1. Create pull request
 1. Validate funcitonaluty installing the branch in anyproject
