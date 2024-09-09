@@ -2,8 +2,6 @@ const Logger = require('../../drivers/logger')
 
 const { levels, colors, date } = require('../../drivers/logger/constants');
 
-
-
 jest.mock('winston', () => ({
   format: {
     combine: jest.fn(), 

@@ -2,6 +2,8 @@
 const axios = require('axios');
 const urlValidator = require('valid-url');
 
+const { timeout } = require('./constants');
+
 module.exports = class Rest {
   constructor(
     host, 
@@ -63,7 +65,7 @@ module.exports = class Rest {
 
     logger.info(`Requesting: ${request}`);
 
-    return this.call(path, verb, data, { timeout: 1000, ...config })
+    return this.call(path, verb, data, { timeout, ...config })
       .then((response) => {
         logger.debug(`Success: ${request}`);
         
@@ -86,9 +88,9 @@ module.exports = class Rest {
     return { data, status: parseInt(status, 10) };
   }
 
-  health() {
-    return this.send('')
+  health(config = {}) {
+    return this.send('', 'get', {}, config)
       .then(({ data }) => data)
-      .catch(() => ({ running: false })) 
+      .catch((error) => ({ running: false, error })) 
   }
 };
