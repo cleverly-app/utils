@@ -2,6 +2,7 @@
 const axios = require('axios');
 const urlValidator = require('valid-url');
 
+const random = require('../../libs/random')
 const { timeout } = require('./constants');
 
 module.exports = class Rest {
@@ -60,7 +61,19 @@ module.exports = class Rest {
     }
   }
 
-  send(route = '/', method = 'get', data = {}, config = {}) {
+  getSettings(config, id = false) {
+    const settings = {
+      ...this.config,
+      ...config,
+    }
+    settings.headers = {
+      ...settings.headers,
+      "trace_id": id ? id : random(),
+    }
+    return settings;
+  }
+
+  send(route = '/', method = 'get', data = {}, config = {}, id = false) {
     const { logger, client, host } = this;
     const verb = method.toUpperCase();
     const base = route === '' ? '' : this.base;
@@ -68,9 +81,11 @@ module.exports = class Rest {
 
     const request = `${client} - [${verb}] ${host}${path}`;
 
+    const settings = this.getSettings(config, id);
+
     logger.info(`Requesting: ${request}`);
 
-    return this.call(path, verb, data, { ...this.config, ...config })
+    return this.call(path, verb, data, settings)
       .then((response) => {
         logger.debug(`Success: ${request}`);
         
