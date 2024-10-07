@@ -325,7 +325,8 @@ test('Sending traceId', () => {
     app,
     headers,
     logger,
-    config
+    config,
+    'string'
   );
   
   instanceOne.axios.get.mockReturnValue(Promise.resolve({ data: "data" }));

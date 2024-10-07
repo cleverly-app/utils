@@ -14,6 +14,7 @@ module.exports = class Rest {
     headers = {},
     logger = console,
     config = {},
+    trace = false,
   ) {
     this.app = app;
     this.client = client;
@@ -24,6 +25,7 @@ module.exports = class Rest {
       timeout,
       ...config,
     }
+    this.trace_id = trace;
 
     if (!urlValidator.isUri(this.host)) {
       throw new Error(`${this.host} is Invalid`);
@@ -61,19 +63,19 @@ module.exports = class Rest {
     }
   }
 
-  getSettings(config, id = false) {
+  getSettings(config) {
     const settings = {
       ...this.config,
       ...config,
     }
     settings.headers = {
       ...settings.headers,
-      "trace_id": id ? id : random(),
+      "trace_id": this.trace_id ?  this.trace_id : random(),
     }
     return settings;
   }
 
-  send(route = '/', method = 'get', data = {}, config = {}, id = false) {
+  send(route = '/', method = 'get', data = {}, config = {}) {
     const { logger, client, host } = this;
     const verb = method.toUpperCase();
     const base = route === '' ? '' : this.base;
@@ -81,7 +83,7 @@ module.exports = class Rest {
 
     const request = `${client} - [${verb}] ${host}${path}`;
 
-    const settings = this.getSettings(config, id);
+    const settings = this.getSettings(config);
 
     logger.info(`Requesting: ${request}`);
 
